@@ -71,8 +71,8 @@ public class CadastroClienteGUI extends JFrame {
     private void cadastrarCliente(Hotel h) {
         try{
             String nome = nomeTextField.getText();
-            String cpf = cpfTextField.getText();
-            String cpfTitular = cpfTitularTextField.getText();
+            String cpf = cpfTextField.getText().replaceAll("[^0-9]", "");
+            String cpfTitular = cpfTitularTextField.getText().replaceAll("[^0-9]", "");
             LocalDate dataNascimento =LocalDate.parse(nascimentoTextField.getText());
 
             if(cpfTitular.length() < 10){
