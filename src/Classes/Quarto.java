@@ -8,18 +8,21 @@ class Quarto{
     private int numero;
     private boolean disponivel;
     private ArrayList<Cliente> clientes;
+    private ClienteTitular titular;
     private Frigobar frigobar;
     private int totalCamaCasal;
     private int totalCamaSolteiro;
     private LocalDate dataEntrada;
 
-    public Quarto(int totalCamaCasal, int totalCamaSolteiro){
+    public Quarto(int numero, int totalCamaCasal, int totalCamaSolteiro){
+        this.numero = numero;
         this.totalCamaCasal = totalCamaCasal;
         this.totalCamaSolteiro = totalCamaSolteiro;
         this.disponivel = true;
+        this.titular = null;
         this.clientes = new ArrayList<Cliente>();
         this.frigobar = Frigobar.criarFrigobarPadrao(this);
-        numero = ++totalQuartos;
+        totalQuartos ++;
     }
 
     public int getNumero(){
@@ -31,6 +34,9 @@ class Quarto{
     public int getTotalCamaSolteiro(){
         return totalCamaSolteiro;
     }
+    public ClienteTitular getTitular(){
+        return titular;
+    }
     public boolean ehDisponivel(){
         return disponivel;
     }
@@ -38,7 +44,7 @@ class Quarto{
         return clientes;
     }
     public void setDisponivel(boolean disponivel){
-        this.disponivel = disponivel;
+        this.disponivel = true;
     }
     public void reiniciaFrigobar(){
         frigobar = Frigobar.criarFrigobarPadrao(this);
@@ -49,18 +55,13 @@ class Quarto{
             System.out.println("Quarto não disponível");
             return false;
         }
-        if(c.getContaPagar() > 0){
-            System.out.println("Cliente com conta pendente");
-            return false;
-        }
         if(c.getListaDependentes().size() + 1 > getTotalCamaSolteiro() + 2*getTotalCamaCasal()){
-            System.out.println("Numero de clientes maior que numero de camas");
+            System.out.println("Número de clientes maior que número de camas");
             return false;
         }
         disponivel = false;
+        this.titular = c;
         dataEntrada = LocalDate.now();
-
-        clientes.clear();
 
         clientes.add(c);
         c.setQuarto(this);

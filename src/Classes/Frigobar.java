@@ -33,7 +33,7 @@ class Frigobar {
         frigobar.addProduto(ProdutosComuns.doce);
         frigobar.addProduto(ProdutosComuns.salgadinho);
         frigobar.addProduto(ProdutosComuns.banana);
-
+        frigobar.addProduto(ProdutosComuns.amendoim);
         return frigobar;
     }
 
