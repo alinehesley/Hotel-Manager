@@ -55,7 +55,7 @@ public class MenuCheckIn extends JFrame {
         try {
 
 
-            String cpf = cpfTextField.getText();
+            String cpf = cpfTextField.getText().replaceAll("[^0-9]", "");
             int camasSolteiro = Integer.parseInt(camasSolteiroTextField.getText());
             int camasCasal = Integer.parseInt(camasCasalTextField.getText());
             if (h.reservarQuarto(cpf, camasSolteiro, camasCasal)) {
