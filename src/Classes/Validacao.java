@@ -89,8 +89,8 @@ public class Validacao {
         int digito1;
         int digito2;
 
-        int[] m1 = { 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2 };
-        int[] m2 = { 6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2 };
+        int[] m1 = {5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2};
+        int[] m2 = {6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2};
 
         for (i = 0; i < 12; i++) {
             soma_digito1 += (cnpj.charAt(i) - 48) * m1[i];

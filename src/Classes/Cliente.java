@@ -1,37 +1,59 @@
 package Classes;
 
+import Classes.exceptions.CPFInvalidoException;
+
 import java.time.LocalDate;
 
-abstract class Cliente{
+public abstract class Cliente {
     protected String nome;
     protected LocalDate dataNascimento;
     protected String cpf;
-    protected double gasto;
+    protected double conta;
 
-    public Cliente(String nome, LocalDate dataNascimento, String cpf){
+    public Cliente(String nome, LocalDate dataNascimento, String cpf) throws CPFInvalidoException {
         this.nome = nome;
         this.dataNascimento = dataNascimento;
 
-        if (Validacao.validarCPF(cpf) == false){
-            System.out.println("CPF invalido");
-            throw new IllegalArgumentException("CPF invalido");
-        }
+        if (Validacao.validarCPF(cpf) == false)
+            throw new CPFInvalidoException(cpf);
 
-        this.cpf = cpf;
-        this.gasto = 0;
+        this.cpf = cpf.replaceAll("[^0-9]", "");
+        this.conta = 0;
     }
 
-    public abstract double getContaPagar();
+    public double getConta() {
+        return conta;
+    }
 
-    public abstract void addContaPagar(double valor);
+    public void addConta(double valor) {
+        conta += valor;
+    }
 
-    public abstract void reinicializa();
+    public void pagarConta(double valor) {
+        conta -= valor;
+        if (conta < 0.01)
+            conta = 0.0;
+    }
 
-    public String getNome(){
+    public void pagarConta() {
+        conta = 0.0;
+    }
+
+    public String getNome() {
         return nome;
     }
-    public String getCpf(){
+
+    public String getCpf() {
         return cpf;
     }
 
+    public String getCpfFormatado() {
+        return cpf.substring(0, 3) + "." + cpf.substring(3, 6) + "." + cpf.substring(6, 9) + "-" + cpf.substring(9);
+    }
+
+    public LocalDate getDataNascimento() {
+        return dataNascimento;
+    }
+
+    public abstract Quarto getQuarto();
 }

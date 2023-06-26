@@ -1,28 +1,30 @@
 package Classes;
 
-import java.time.LocalDate;
+import Classes.exceptions.CPFInvalidoException;
+import Classes.exceptions.ClienteException;
 
-class ClienteDependente extends Cliente {
+import java.time.LocalDate;
+import java.util.Objects;
+
+public class ClienteDependente extends Cliente {
     private ClienteTitular titular;
 
-    ClienteDependente(String nome, LocalDate dataNascimento, String cpf, ClienteTitular titular) {
+    ClienteDependente(String nome, LocalDate dataNascimento, String cpf, ClienteTitular titular) throws ClienteException {
         super(nome, dataNascimento, cpf);
-        this.titular = titular;
+
+        this.titular = Objects.requireNonNull(titular);
         titular.addDependente(this);
-    }
-
-    @Override
-    public double getContaPagar() {
-        return gasto;
-    }
-
-    @Override
-    public void addContaPagar(double valor) {
-        gasto += valor;
     }
 
     public ClienteTitular getTitular() {
         return titular;
     }
 
+    @Override
+    public Quarto getQuarto() {
+        if (titular == null)
+            return null;
+
+        return titular.getQuarto();
+    }
 }

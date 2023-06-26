@@ -4,7 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="15ebd6eb-12ea-44f5-98ab-c9c7aa357ccc" name="Changes" comment="" />
+    <list default="true" id="15ebd6eb-12ea-44f5-98ab-c9c7aa357ccc" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Classes/Cliente.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Classes/Cliente.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Classes/ClienteDependente.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Classes/ClienteDependente.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Classes/ClienteTitular.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Classes/ClienteTitular.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Classes/Hotel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Classes/Hotel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Classes/Produto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Classes/Produto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Classes/Quarto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Classes/Quarto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Classes/Validacao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Classes/Validacao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Classes/graficas/MenuCheckIn.java" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -40,6 +50,7 @@
 }</component>
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="Classes.exceptions" />
       <recent name="Classes.graficas" />
     </key>
   </component>
@@ -62,5 +73,16 @@
       <updated>1687710365499</updated>
     </task>
     <servers />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/Classes/graficas/MenuInicial.java</url>
+          <line>63</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

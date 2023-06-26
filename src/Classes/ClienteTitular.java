@@ -1,41 +1,41 @@
 package Classes;
 
+import Classes.exceptions.CPFInvalidoException;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-class ClienteTitular extends Cliente {
+public class ClienteTitular extends Cliente {
     private ArrayList<ClienteDependente> listaDependentes;
     private Quarto quarto;
 
-    public ClienteTitular(String nome, LocalDate dataNascimento, String cpf){
+    public ClienteTitular(String nome, LocalDate dataNascimento, String cpf) throws CPFInvalidoException {
         super(nome, dataNascimento, cpf);
         this.listaDependentes = new ArrayList<ClienteDependente>();
     }
 
-    @Override
-    public double getContaPagar(){
-        double total = gasto;
-        for(ClienteDependente dependente : listaDependentes){
-            total += dependente.getContaPagar();
-        }
-        return total;
-    }
-
-    @Override
-    public void addContaPagar(double valor) {
-        gasto += valor;
-    }
-
-    protected void addDependente(ClienteDependente dependente){
+    protected void addDependente(ClienteDependente dependente) {
         listaDependentes.add(dependente);
     }
 
-    public void setQuarto(Quarto quarto){
+    @Override
+    public Quarto getQuarto() {
+        return quarto;
+    }
+
+    public void setQuarto(Quarto quarto) {
         this.quarto = quarto;
     }
 
-    public ArrayList<ClienteDependente> getListaDependentes(){
+    public ArrayList<ClienteDependente> getListaDependentes() {
         return listaDependentes;
     }
 
+    public double getTotalConta() {
+        double total = getConta();
+        for (ClienteDependente dependente : listaDependentes) {
+            total += dependente.getConta();
+        }
+        return total;
+    }
 }
