@@ -25,6 +25,8 @@ abstract class Cliente{
 
     public abstract void addContaPagar(double valor);
 
+    public abstract void reinicializa();
+
     public String getNome(){
         return nome;
     }
