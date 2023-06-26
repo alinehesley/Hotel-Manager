@@ -1,3 +1,5 @@
+package Classes;
+
 import Classes.graficas.MenuInicial;
 
 import javax.swing.*;
