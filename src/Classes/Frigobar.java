@@ -2,7 +2,7 @@ package Classes;
 
 import java.util.ArrayList;
 
-class Frigobar {
+public class Frigobar {
     private ArrayList<Produto> listaProdutos;
     private double totalVendas;
     private Quarto quarto;

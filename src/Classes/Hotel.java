@@ -25,14 +25,12 @@ public class Hotel {
         this.listaClientes = new ArrayList<Cliente>();
     }
 
-    // Cria uma cópia da lista de quartos
-    public ArrayList<Quarto> getListaQuartos() {
-        return new ArrayList<>(listaQuartos);
+    public ArrayList<Quarto> getQuartos() {
+        return listaQuartos;
     }
 
-    // Cria uma cópia da lista de clientes
-    public ArrayList<Cliente> getListaClientes() {
-        return new ArrayList<>(listaClientes);
+    public ArrayList<Cliente> getClientes() {
+        return listaClientes;
     }
 
     public String getNome() {
@@ -105,6 +103,8 @@ public class Hotel {
     public void cadastrarClienteDependente(ClienteDependente clienteDependente) throws ClienteCadastradoException {
         if (cpfJaCadastrado(clienteDependente.getCpf()))
             throw new ClienteCadastradoException();
+        if (clienteDependente.getTitular().getQuarto() != null)
+            throw new ClienteCadastradoException("Não é possível cadastrar um dependente de um cliente que já está hospedado");
 
         listaClientes.add(clienteDependente);
     }

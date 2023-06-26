@@ -112,4 +112,9 @@ public class Quarto {
         this.titular = null;
         this.disponivel = true;
     }
+
+    @Override
+    public String toString() {
+        return "Quarto " + numero;
+    }
 }
