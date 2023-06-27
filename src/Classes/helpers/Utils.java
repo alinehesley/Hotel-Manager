@@ -5,6 +5,8 @@ import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -17,7 +19,11 @@ public class Utils {
         void update(DocumentEvent e);
     }
 
-    public static MouseAdapter fromMouseClick(MouseClickEvent ev) {
+    public interface ResizeEvent {
+        void update(ComponentEvent e);
+    }
+
+    public static MouseAdapter onMouseClick(MouseClickEvent ev) {
         return new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -26,7 +32,7 @@ public class Utils {
         };
     }
 
-    public static DocumentListener fromDocumentModify(DocumentModifyEvent ev) {
+    public static DocumentListener onDocumentModify(DocumentModifyEvent ev) {
         return new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
@@ -40,6 +46,15 @@ public class Utils {
 
             @Override
             public void changedUpdate(DocumentEvent e) {
+                ev.update(e);
+            }
+        };
+    }
+
+    public static ComponentAdapter onResize(ResizeEvent ev) {
+        return new ComponentAdapter() {
+
+            public void componentResized(ComponentEvent e) {
                 ev.update(e);
             }
         };

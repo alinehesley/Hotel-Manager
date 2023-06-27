@@ -4,6 +4,7 @@ import Classes.Cliente;
 import Classes.Hotel;
 
 import javax.swing.*;
+import java.util.List;
 
 public class SelecionadorCliente extends MenuClientesBase {
     public interface SelecaoClienteCallback {
@@ -30,6 +31,10 @@ public class SelecionadorCliente extends MenuClientesBase {
         closeButton.addActionListener(e -> fecharMenu(false));
         buttonPanel.add(Box.createHorizontalGlue());
         buttonPanel.add(closeButton);
+    }
+
+    public void setLista(List<Cliente> lista) {
+        listaClientes.setLista(lista);
     }
 
     public void setSelecaoCallback(SelecaoClienteCallback callback) {

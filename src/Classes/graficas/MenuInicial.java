@@ -13,7 +13,7 @@ public class MenuInicial extends MenuBase {
     private JButton clientesButton;
     private JButton quartosButton;
 
-    public MenuInicial(){
+    public MenuInicial() {
         super(hotelPadrao(), "Menu Principal");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         Hotel hotel = getHotel();

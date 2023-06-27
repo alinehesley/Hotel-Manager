@@ -80,27 +80,27 @@ public class ClientePainel extends JPanel {
         labelTitular = new JLabel();
         labelConta = new JLabel();
 
-        labelNome.addMouseListener(Utils.fromMouseClick(e -> {
+        labelNome.addMouseListener(Utils.onMouseClick(e -> {
             if (cliente != null)
                 Utils.copyToClipboard(cliente.getNome());
         }));
-        labelCPF.addMouseListener(Utils.fromMouseClick(e -> {
+        labelCPF.addMouseListener(Utils.onMouseClick(e -> {
             if (cliente != null)
                 Utils.copyToClipboard(cliente.getCpfFormatado());
         }));
-        labelDataNascimento.addMouseListener(Utils.fromMouseClick(e -> {
+        labelDataNascimento.addMouseListener(Utils.onMouseClick(e -> {
             if (cliente != null)
                 Utils.copyToClipboard(cliente.getDataNascimento().format(DateParser.FORMATTER));
         }));
-        labelQuarto.addMouseListener(Utils.fromMouseClick(e -> {
+        labelQuarto.addMouseListener(Utils.onMouseClick(e -> {
             if (cliente != null && cliente.getQuarto() != null)
                 Utils.copyToClipboard(String.format("%d", cliente.getQuarto().getNumero()));
         }));
-        labelTitular.addMouseListener(Utils.fromMouseClick(e -> {
+        labelTitular.addMouseListener(Utils.onMouseClick(e -> {
             if (cliente instanceof ClienteDependente)
                 setCliente(((ClienteDependente) cliente).getTitular());
         }));
-        labelConta.addMouseListener(Utils.fromMouseClick(e -> {
+        labelConta.addMouseListener(Utils.onMouseClick(e -> {
             if (cliente != null)
                 Utils.copyToClipboard(String.format("%.2f", cliente.getConta()));
         }));

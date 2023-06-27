@@ -43,16 +43,24 @@ public class Quarto {
         return totalCamaSolteiro;
     }
 
+    public ArrayList<Cliente> getClientes() {
+        return clientes;
+    }
+
+    public LocalDate getDataEntrada() {
+        return dataEntrada;
+    }
+
+    public LocalDate getDataSaida() {
+        return dataSaida;
+    }
+
     public ClienteTitular getTitular() {
         return titular;
     }
 
     public boolean ehDisponivel() {
         return disponivel;
-    }
-
-    public ArrayList<Cliente> getClientes() {
-        return clientes;
     }
 
     public void setDisponivel(boolean disponivel) {
@@ -82,14 +90,13 @@ public class Quarto {
         c.setQuarto(this);
     }
 
-    public boolean fazerCheckOut() {
+    public void fazerCheckOut() throws QuartoNaoLocadoException {
         if (disponivel)
-            return false;
+            throw new QuartoNaoLocadoException(numero);
 
         // Função desaloca o cliente do quarto.
         reinicializarQuarto();
         reiniciarFrigobar();
-        return true;
     }
 
     public double calculaPrecoEstadia() throws QuartoNaoLocadoException {

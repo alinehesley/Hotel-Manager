@@ -1,6 +1,7 @@
 package Classes.graficas;
 
 import Classes.Cliente;
+import Classes.ClienteDependente;
 import Classes.Hotel;
 import Classes.helpers.CustomListCellRenderer;
 
@@ -10,6 +11,7 @@ import java.util.List;
 
 public class ListaClientes extends JList {
     private List<Cliente> lista;
+    private boolean highlightDependents;
 
     public ListaClientes() {
         this(new ArrayList<Cliente>());
@@ -18,10 +20,13 @@ public class ListaClientes extends JList {
     public ListaClientes(List<Cliente> lista) {
         super();
         this.lista = lista;
+        this.highlightDependents = true;
 
         this.setCellRenderer(new CustomListCellRenderer() {
             @Override
             public String getDisplayText(Object value) {
+                if (highlightDependents && value instanceof ClienteDependente)
+                    return ((Cliente)value).getNome() + " *";
                 if (value instanceof Cliente)
                     return ((Cliente)value).getNome();
 
@@ -73,6 +78,14 @@ public class ListaClientes extends JList {
     public void setLista(List<Cliente> lista) {
         this.lista = lista;
         this.refresh();
+    }
+
+    public boolean getHighlightDependents() {
+        return highlightDependents;
+    }
+
+    public void setHighlightDependents(boolean b) {
+        this.highlightDependents = b;
     }
 
     public void clear() {

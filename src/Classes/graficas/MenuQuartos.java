@@ -1,13 +1,12 @@
 package Classes.graficas;
 
-import Classes.Cliente;
-import Classes.ClienteTitular;
-import Classes.Hotel;
-import Classes.Quarto;
+import Classes.*;
 import Classes.exceptions.QuartoIndisponivelException;
+import Classes.exceptions.QuartoNaoLocadoException;
 
 import javax.swing.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class MenuQuartos extends MenuQuartosBase {
@@ -23,8 +22,11 @@ public class MenuQuartos extends MenuQuartosBase {
                 return;
             }
 
+            ArrayList<Cliente> clientesTitulares = h.filtrarClientes(cliente -> (cliente instanceof ClienteTitular));
+
             SelecionadorCliente selecionadorCliente = new SelecionadorCliente(h);
             selecionadorCliente.setSelecaoCallback(cliente -> reservarQuarto(quarto, cliente));
+            selecionadorCliente.setLista(clientesTitulares);
 
             selecionadorCliente.exibirMenu();
         });
@@ -41,7 +43,7 @@ public class MenuQuartos extends MenuQuartosBase {
         cliente = (Cliente) Objects.requireNonNull(cliente);
 
         if (!(cliente instanceof ClienteTitular)) {
-            JOptionPane.showMessageDialog(this, "Cliente não é titular!", "Erro", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Cliente não é titular!", "Reservar quarto", JOptionPane.ERROR_MESSAGE);
             return false;
         }
 
@@ -51,8 +53,34 @@ public class MenuQuartos extends MenuQuartosBase {
             listaClientes.refresh();
             return true;
         } catch (QuartoIndisponivelException e) {
-            JOptionPane.showMessageDialog(this, e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Reservar quarto", JOptionPane.ERROR_MESSAGE);
             return false;
         }
+    }
+
+    public boolean encerrarReserva(Quarto quarto) {
+        quarto = (Quarto) Objects.requireNonNull(quarto);
+        if (quarto.ehDisponivel()) {
+            JOptionPane.showMessageDialog(this, "Quarto não está locado", "Encerrar reserva", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+
+        final ArrayList<Cliente> clientes = new ArrayList<>(quarto.getClientes());
+
+        try {
+            quarto.fazerCheckOut();
+        } catch (QuartoNaoLocadoException e) {
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Encerrar reserva", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+
+        int pagarConta = JOptionPane.showConfirmDialog(this, "Check-out realizado! Deseja pagar a conta agora?", "Pagar conta", JOptionPane.YES_NO_OPTION);
+        if (pagarConta == JOptionPane.YES_OPTION) {
+            MenuClientePagamento menuClientePagamento = new MenuClientePagamento(getHotel());
+            menuClientePagamento.setLista(clientes);
+            menuClientePagamento.exibirMenu();
+        }
+
+        return true;
     }
 }

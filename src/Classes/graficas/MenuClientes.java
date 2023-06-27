@@ -2,6 +2,7 @@ package Classes.graficas;
 
 import Classes.Cliente;
 import Classes.Hotel;
+import Classes.exceptions.ClienteException;
 import Classes.helpers.Utils;
 
 import javax.swing.*;
@@ -22,11 +23,40 @@ public class MenuClientes extends MenuClientesBase {
         });
         buttonPanel.add(cadastrarClienteButton);
 
-//        JButton removerClienteButton = new JButton("Remover Cliente");
-//        removerClienteButton.addActionListener(e -> {
-//
-//        });
-//        buttonPanel.add(removerClienteButton);
+        JButton removerClienteButton = new JButton("Remover Cliente");
+        removerClienteButton.addActionListener(e -> {
+            Cliente cliente = clientePainel.getCliente();
+            if (cliente != null) {
+                int result = JOptionPane.showConfirmDialog(
+                        null,
+                        "Tem certeza que deseja remover o cliente " + cliente.getNome() + "?",
+                        "Remover cliente",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.WARNING_MESSAGE
+                );
+                if (result == JOptionPane.YES_OPTION) {
+                    try {
+                        getHotel().removerCliente(cliente);
+                    } catch (ClienteException ex) {
+                        JOptionPane.showMessageDialog(
+                                null,
+                                ex.getMessage(),
+                                "Remover cliente",
+                                JOptionPane.ERROR_MESSAGE
+                        );
+                    }
+                    clientePainel.refresh();
+                }
+            } else {
+                JOptionPane.showMessageDialog(
+                        null,
+                        "Selecione um cliente para remover",
+                        "Remover cliente",
+                        JOptionPane.WARNING_MESSAGE
+                );
+            }
+        });
+        buttonPanel.add(removerClienteButton);
 
         // TODO(thiago): Menu para pagar as contas
         JButton pagarContaButton = new JButton("Pagar Conta");

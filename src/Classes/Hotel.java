@@ -109,6 +109,24 @@ public class Hotel {
         listaClientes.add(clienteDependente);
     }
 
+    public void removerCliente(Cliente cliente) throws ClienteException {
+        if (!listaClientes.remove(cliente))
+            throw new ClienteException("Cliente não encontrado");
+
+        if (cliente.getQuarto() != null)
+            throw new ClienteException("Não é possível remover um cliente que está hospedado");
+
+        if (cliente instanceof ClienteTitular) {
+            if (((ClienteTitular)cliente).getListaDependentes().size() > 0)
+                throw new ClienteException("Não é possível remover um cliente titular que possui dependentes");
+        }
+
+        if (cliente instanceof ClienteDependente) {
+            ClienteTitular titular = ((ClienteDependente)cliente).getTitular();
+            titular.getListaDependentes().remove(cliente);
+        }
+    }
+
     public Cliente getClienteFromCpf(String cpf) {
         for (Cliente c : listaClientes) {
             if (c.getCpf().equals(cpf)) {
@@ -117,6 +135,21 @@ public class Hotel {
         }
 
         return null;
+    }
+
+    public interface FiltroCliente {
+        // Return true if client should be included in the list
+        boolean filtrar(Cliente cliente);
+    }
+
+    public ArrayList<Cliente> filtrarClientes(FiltroCliente filtro) {
+        ArrayList<Cliente> clientesFiltrados = new ArrayList<Cliente>();
+        for (Cliente cliente : listaClientes) {
+            if (filtro.filtrar(cliente)) {
+                clientesFiltrados.add(cliente);
+            }
+        }
+        return clientesFiltrados;
     }
 
     public Quarto reservarQuarto(String cpf, int totalCamaCasal, int totalCamaSolteiro, LocalDate dataEntrada, LocalDate dataSaida) throws ClienteException {
@@ -197,6 +230,7 @@ public class Hotel {
                 capacidade += 2 * quarto.getTotalCamaCasal() + quarto.getTotalCamaCasal();
             }
         }
+
         this.totalVagas = capacidade;
     }
 
@@ -228,6 +262,4 @@ public class Hotel {
 //        }
 //
 //    }
-
-
 }

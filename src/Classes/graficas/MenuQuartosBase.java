@@ -1,6 +1,5 @@
 package Classes.graficas;
 
-import Classes.Cliente;
 import Classes.Hotel;
 import Classes.Quarto;
 import Classes.helpers.DisabledItemSelectionModel;
@@ -14,6 +13,7 @@ import java.awt.event.ComponentEvent;
 public class MenuQuartosBase extends MenuBase {
     protected final ListaQuartos listaQuartos;
     protected final ListaClientes listaClientes;
+    protected final QuartoPainel quartoPainel;
     protected final JPanel leftPanel; // BorderLayout
     protected final JPanel rightPanel; // BorderLayout
     protected final JPanel buttonPanel; // BoxLayout.X_AXIS
@@ -24,24 +24,29 @@ public class MenuQuartosBase extends MenuBase {
 
         listaClientes = new ListaClientes();
         listaClientes.setLayout(new BorderLayout());
-        listaClientes.setPreferredSize(new Dimension(2*getWidth()/5, getHeight()));
         listaClientes.setSelectionModel(new DisabledItemSelectionModel());
 
         listaQuartos = new ListaQuartos(getHotel());
         listaQuartos.setLayout(new BoxLayout(listaQuartos, BoxLayout.PAGE_AXIS));
         listaQuartos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
+        quartoPainel = new QuartoPainel();
+        quartoPainel.setLayout(new BoxLayout(quartoPainel, BoxLayout.Y_AXIS));
+
         listaQuartos.addListSelectionListener(e -> {
             Quarto quarto = (Quarto) listaQuartos.getSelectedValue();
 
-            if (quarto == null)
+            if (quarto == null) {
                 listaClientes.clear();
-            else
+                quartoPainel.setQuarto(null);
+            } else {
                 listaClientes.setLista(quarto.getClientes());
+                quartoPainel.setQuarto(quarto);
+            }
         });
 
         JTextField searchBar = new JTextField();
-        searchBar.getDocument().addDocumentListener(Utils.fromDocumentModify(e -> {
+        searchBar.getDocument().addDocumentListener(Utils.onDocumentModify(e -> {
             listaQuartos.refresh(searchBar.getText());
         }));
 
@@ -54,17 +59,16 @@ public class MenuQuartosBase extends MenuBase {
         leftPanel.add(new JScrollPane(listaQuartos), BorderLayout.CENTER);
         leftPanel.add(searchBar, BorderLayout.SOUTH);
 
-        JPanel panel1 = new JPanel();
-        panel1.setLayout(new BorderLayout());
-        panel1.setBackground(Color.blue);
-
-        panel1.setPreferredSize(new Dimension(2*getWidth()/5, getHeight()));
-
         rightPanel = new JPanel();
         rightPanel.setLayout(new BorderLayout());
         rightPanel.add(buttonPanel, BorderLayout.SOUTH);
-        rightPanel.add(panel1, BorderLayout.WEST);
+        rightPanel.add(quartoPainel, BorderLayout.WEST);
         rightPanel.add(listaClientes, BorderLayout.EAST);
+
+        rightPanel.addComponentListener(Utils.onResize(e -> {
+            listaClientes.setPreferredSize(new Dimension(2*getWidth() / 5, rightPanel.getHeight()));
+            quartoPainel.setPreferredSize(new Dimension(2*getWidth() / 5, rightPanel.getHeight()));
+        }));
 
         // Main Panel
         JPanel mainPanel = new JPanel();
@@ -73,22 +77,19 @@ public class MenuQuartosBase extends MenuBase {
         mainPanel.add(leftPanel, BorderLayout.WEST);
         mainPanel.add(rightPanel, BorderLayout.CENTER);
 
-        // Make ScrollableList always take 1/3 of the screen
-        leftPanel.setPreferredSize(new Dimension(mainPanel.getWidth() / 5, mainPanel.getHeight()));
-        mainPanel.addComponentListener(new ComponentAdapter() {
-            public void componentResized(ComponentEvent evt) {;
-                leftPanel.setPreferredSize(new Dimension(mainPanel.getWidth() / 5, mainPanel.getHeight()));
-            }
-        });
+        mainPanel.addComponentListener(Utils.onResize(e -> {
+            leftPanel.setPreferredSize(new Dimension(mainPanel.getWidth() / 5, mainPanel.getHeight()));
+            rightPanel.setPreferredSize(new Dimension(4 * mainPanel.getWidth() / 5, mainPanel.getHeight()));
+        }));
 
         // Add the main panel to the frame
         add(mainPanel);
     }
 
-
     @Override
     public void refresh() {
         listaQuartos.refresh();
         listaClientes.clear();
+        quartoPainel.setQuarto(null);
     }
 }

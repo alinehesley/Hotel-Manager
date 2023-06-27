@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.util.List;
 
 public class MenuClientesBase extends MenuBase {
     protected final ListaClientes listaClientes;
@@ -35,7 +36,7 @@ public class MenuClientesBase extends MenuBase {
         });
 
         // Hack para permitir que o usuário selecione o item já selecionado
-        listaClientes.addMouseListener(Utils.fromMouseClick(e -> {
+        listaClientes.addMouseListener(Utils.onMouseClick(e -> {
             if (listaClientes.locationToIndex(e.getPoint()) != listaClientes.getSelectedIndex())
                 return;
 
@@ -45,7 +46,7 @@ public class MenuClientesBase extends MenuBase {
         }));
 
         JTextField searchBar = new JTextField();
-        searchBar.getDocument().addDocumentListener(Utils.fromDocumentModify(e -> {
+        searchBar.getDocument().addDocumentListener(Utils.onDocumentModify(e -> {
             listaClientes.refresh(searchBar.getText());
         }));
 
@@ -71,7 +72,6 @@ public class MenuClientesBase extends MenuBase {
         mainPanel.add(rightPanel, BorderLayout.CENTER);
 
         // Make ScrollableList always take 1/3 of the screen
-        leftPanel.setPreferredSize(new Dimension(mainPanel.getWidth() / 3, mainPanel.getHeight()));
         mainPanel.addComponentListener(new ComponentAdapter() {
             public void componentResized(ComponentEvent evt) {
                 leftPanel.setPreferredSize(new Dimension(mainPanel.getWidth() / 3, mainPanel.getHeight()));
@@ -82,6 +82,9 @@ public class MenuClientesBase extends MenuBase {
         add(mainPanel);
     }
 
+    public void setLista(List<Cliente> lista) {
+        listaClientes.setLista(lista);
+    }
 
     @Override
     public void refresh() {
