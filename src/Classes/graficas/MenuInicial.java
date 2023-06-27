@@ -13,10 +13,9 @@ public class MenuInicial extends MenuBase {
     private JButton clientesButton;
     private JButton quartosButton;
 
-    public MenuInicial() {
-        super(hotelPadrao(), "Menu Principal");
+    public MenuInicial(Hotel hotel) {
+        super(hotel, "Menu Principal");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        Hotel hotel = getHotel();
 
         // Criação do painel principal
         mainPanel = new JPanel();
@@ -73,7 +72,7 @@ public class MenuInicial extends MenuBase {
     }
 
     // TODO(thiago): Essa função deve ser estática?
-    private static Hotel hotelPadrao(){
+    public static Hotel getHotelPadrao(){
         Hotel h = new Hotel(
                 "Hotel de POO",
                 "Rua dos bobos numero zero",

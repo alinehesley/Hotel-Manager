@@ -8,9 +8,11 @@ import java.awt.*;
 public class Main {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            MenuInicial menuPrincipalGUI = new MenuInicial();
+            // TODO: Colocar o hotel do arquivo ao invés do hotel padrão
+            Hotel hotel = MenuInicial.getHotelPadrao();
+
+            MenuInicial menuPrincipalGUI = new MenuInicial(hotel);
             menuPrincipalGUI.setVisible(true);
         });
-
     }
 }
