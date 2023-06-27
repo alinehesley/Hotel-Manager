@@ -227,7 +227,7 @@ public class Hotel {
         int capacidade = 0;
         for (Quarto quarto : listaQuartos) {
             if (quarto.ehDisponivel()) {
-                capacidade += 2 * quarto.getTotalCamaCasal() + quarto.getTotalCamaCasal();
+                capacidade += 2 * quarto.getTotalCamaCasal() + quarto.getTotalCamaSolteiro();
             }
         }
 
