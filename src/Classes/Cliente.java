@@ -5,10 +5,10 @@ import Classes.exceptions.CPFInvalidoException;
 import java.time.LocalDate;
 
 public abstract class Cliente {
-    protected String nome;
-    protected LocalDate dataNascimento;
-    protected String cpf;
-    protected double conta;
+    private String nome;
+    private LocalDate dataNascimento;
+    private String cpf;
+    private double conta;
 
     public Cliente(String nome, LocalDate dataNascimento, String cpf) throws CPFInvalidoException {
         this.nome = nome;
