@@ -1,6 +1,7 @@
 package Classes.graficas;
 
 import Classes.*;
+import Classes.exceptions.ClienteException;
 import Classes.exceptions.QuartoIndisponivelException;
 import Classes.exceptions.QuartoNaoLocadoException;
 
@@ -22,20 +23,31 @@ public class MenuQuartos extends MenuQuartosBase {
                 return;
             }
 
-            ArrayList<Cliente> clientesTitulares = h.filtrarClientes(cliente -> (cliente instanceof ClienteTitular));
-
-            SelecionadorCliente selecionadorCliente = new SelecionadorCliente(h);
-            selecionadorCliente.setSelecaoCallback(cliente -> reservarQuarto(quarto, cliente));
-            selecionadorCliente.setLista(clientesTitulares);
-
-            selecionadorCliente.exibirMenu();
+            MenuReserva menuReserva = new MenuReserva(h);
+            menuReserva.setParent(this);
+            menuReserva.getNumeroField().getField().setText(Integer.toString(quarto.getNumero()));
+            menuReserva.exibirMenu();
         });
         buttonPanel.add(reservarButton);
+        reservarButton.setVisible(false);
+
+        JButton encerrarReserva = new JButton("Encerrar reserva");
+        encerrarReserva.addActionListener(e -> {
+            Quarto quarto = (Quarto) listaQuartos.getSelectedValue();
+            encerrarReserva(quarto);
+        });
+        buttonPanel.add(encerrarReserva);
+        encerrarReserva.setVisible(false);
 
         JButton closeButton = new JButton("Fechar");
         closeButton.addActionListener(e -> fecharMenu(true));
         buttonPanel.add(Box.createHorizontalGlue());
         buttonPanel.add(closeButton);
+
+        quartoPainel.addCallback(quarto -> {
+            reservarButton.setVisible(quarto != null && quarto.ehDisponivel());
+            encerrarReserva.setVisible(quarto != null && !quarto.ehDisponivel());
+        });
     }
 
     public boolean reservarQuarto(Quarto quarto, Cliente cliente) {
@@ -52,7 +64,7 @@ public class MenuQuartos extends MenuQuartosBase {
             JOptionPane.showMessageDialog(this, "Quarto reservado com sucesso");
             listaClientes.refresh();
             return true;
-        } catch (QuartoIndisponivelException e) {
+        } catch (QuartoIndisponivelException | ClienteException e) {
             JOptionPane.showMessageDialog(this, e.getMessage(), "Reservar quarto", JOptionPane.ERROR_MESSAGE);
             return false;
         }
@@ -68,7 +80,7 @@ public class MenuQuartos extends MenuQuartosBase {
         final ArrayList<Cliente> clientes = new ArrayList<>(quarto.getClientes());
 
         try {
-            quarto.fazerCheckOut();
+            getHotel().encerrarReserva(quarto, 0.0);
         } catch (QuartoNaoLocadoException e) {
             JOptionPane.showMessageDialog(this, e.getMessage(), "Encerrar reserva", JOptionPane.ERROR_MESSAGE);
             return false;
@@ -78,6 +90,7 @@ public class MenuQuartos extends MenuQuartosBase {
         if (pagarConta == JOptionPane.YES_OPTION) {
             MenuClientePagamento menuClientePagamento = new MenuClientePagamento(getHotel());
             menuClientePagamento.setLista(clientes);
+            menuClientePagamento.setParent(this);
             menuClientePagamento.exibirMenu();
         }
 

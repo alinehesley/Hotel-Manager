@@ -5,8 +5,8 @@ import Classes.Hotel;
 import javax.swing.*;
 
 public abstract class MenuBase extends JFrame {
-    public static final int larguraPadrao = 800;
-    public static final int alturaPadrao = 500;
+    public static final int larguraPadrao = 960;
+    public static final int alturaPadrao = 600;
 
     private final Hotel hotel;
     private MenuBase parent = null;

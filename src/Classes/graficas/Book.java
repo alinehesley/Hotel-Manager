@@ -6,43 +6,52 @@ import javax.swing.*;
 
 import java.awt.*;
 
-public class MenuInicial extends MenuBase {
+public class Book extends MenuBase {
     private JPanel mainPanel;
     private JPanel menuPanel;
     private JPanel contentPanel;
     private JButton clientesButton;
     private JButton quartosButton;
 
-    public MenuInicial(Hotel hotel) {
-        super(hotel, "Menu Principal");
+    public Book(Hotel hotel) {
+        super(hotel, "Book");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // Criação do painel principal
         mainPanel = new JPanel();
-        mainPanel.setLayout(new BorderLayout());
+        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+
+        mainPanel.add(Box.createVerticalGlue());
 
         // Criação do painel do menu
         menuPanel = new JPanel();
 
+        // Criação do painel de conteúdo
+        contentPanel = new JPanel();
+        contentPanel.setLayout(new FlowLayout());
+        JLabel label = new JLabel("Gerenciamento do Hotel");
+        label.setFont(new Font(label.getFont().getName(), Font.PLAIN, 30));
+        contentPanel.add(label);
+
         // Menu de clientes
-        clientesButton = new JButton("Menu Clientes");
+        clientesButton = new JButton("Menu dos Clientes");
         clientesButton.addActionListener(e -> criarMenu(MenuClientes.class, hotel));
         menuPanel.add(clientesButton);
 
         // Menu de quartos
-        quartosButton = new JButton("Menu Quartos");
+        quartosButton = new JButton("Menu dos Quartos");
         quartosButton.addActionListener(e -> criarMenu(MenuQuartos.class, hotel));
         menuPanel.add(quartosButton);
 
-        // Criação do painel de conteúdo
-        contentPanel = new JPanel();
-        contentPanel.setLayout(new FlowLayout());
-        JLabel label = new JLabel("Bem-vindo ao Menu Principal");
-        contentPanel.add(label);
+        // Menu de reserva
+        quartosButton = new JButton("Reservar um Quarto");
+        quartosButton.addActionListener(e -> criarMenu(MenuReserva.class, hotel));
+        menuPanel.add(quartosButton);
 
         // Adiciona os painéis ao painel principal
-        mainPanel.add(menuPanel, BorderLayout.NORTH);
-        mainPanel.add(contentPanel, BorderLayout.CENTER);
+        mainPanel.add(contentPanel);
+        mainPanel.add(menuPanel);
+        mainPanel.add(Box.createVerticalGlue());
 
         // Adiciona o painel principal à janela
         add(mainPanel);

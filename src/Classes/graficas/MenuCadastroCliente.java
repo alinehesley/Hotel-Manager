@@ -1,18 +1,19 @@
 package Classes.graficas;
 
 import Classes.Hotel;
-import Classes.exceptions.ClienteException;
 import Classes.helpers.DateParser;
+import Classes.helpers.LabeledTextField;
 
 import javax.swing.*;
 
+import java.awt.*;
 import java.time.LocalDate;
 
 public class MenuCadastroCliente extends MenuBase {
-    private JTextField nomeTextField;
-    private JTextField cpfTextField;
-    private JTextField cpfTitularTextField; // vazio se for titular
-    private JTextField nascimentoTextField;
+    private LabeledTextField nomeTextField;
+    private LabeledTextField cpfTextField;
+    private LabeledTextField cpfTitularTextField; // vazio se for titular
+    private LabeledTextField nascimentoTextField;
 
     public MenuCadastroCliente(Hotel hotel) {
         // Configurações básicas da janela
@@ -22,52 +23,72 @@ public class MenuCadastroCliente extends MenuBase {
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
 
+        JPanel contentPanel = new JPanel();
+        contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
+
         // Painel do nome
         JPanel nomePanel = new JPanel();
-        nomePanel.add(new JLabel("Nome:"));
-        nomeTextField = new JTextField(20);
+        nomePanel.setLayout(new BoxLayout(nomePanel, BoxLayout.Y_AXIS));
+        nomeTextField = new LabeledTextField("Nome:", 20);
+        nomeTextField.setMaximumSize(nomeTextField.getPreferredSize());
         nomePanel.add(nomeTextField);
 
         // Painel do CPF
         JPanel cpfPanel = new JPanel();
-        cpfPanel.add(new JLabel("CPF:"));
-        cpfTextField = new JTextField(14);
+        cpfPanel.setLayout(new BoxLayout(cpfPanel, BoxLayout.Y_AXIS));
+        cpfTextField = new LabeledTextField("CPF:", 14);
+        cpfTextField.setMaximumSize(cpfTextField.getPreferredSize());
         cpfPanel.add(cpfTextField);
 
         // Painel do CPF do titular
         JPanel cpfTitularPanel = new JPanel();
-        cpfTitularPanel.add(new JLabel("CPF do titular (vazio se titular):"));
-        cpfTitularTextField = new JTextField(14);
+        cpfTitularPanel.setLayout(new BoxLayout(cpfTitularPanel, BoxLayout.Y_AXIS));
+        cpfTitularTextField = new LabeledTextField("CPF do titular (vazio se titular):", 14);
+        cpfTitularTextField.setMaximumSize(cpfTitularTextField.getPreferredSize());
+        cpfTitularTextField.getLabel().setHorizontalAlignment(JLabel.CENTER);
         cpfTitularPanel.add(cpfTitularTextField);
 
         // Painel do nascimento
         JPanel nascimentoPanel = new JPanel();
-        nascimentoPanel.add(new JLabel("Data de nascimento:"));
-        nascimentoTextField = new JTextField(14);
+        nascimentoPanel.setLayout(new BoxLayout(nascimentoPanel, BoxLayout.Y_AXIS));
+        nascimentoTextField = new LabeledTextField("Data de nascimento:", 14);
+        nascimentoTextField.setMaximumSize(nascimentoTextField.getPreferredSize());
         nascimentoPanel.add(nascimentoTextField);
 
         // Botão de cadastro
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.X_AXIS));
+        buttonPanel.add(Box.createHorizontalGlue());
 
         JButton cadastrarButton = new JButton("Cadastrar");
         cadastrarButton.addActionListener(e -> cadastrarCliente());
         buttonPanel.add(cadastrarButton);
+        buttonPanel.add(Box.createRigidArea(new Dimension(5, 0)));
 
         JButton voltarButton = new JButton("Voltar");
         voltarButton.addActionListener(e -> fecharMenu(false));
         buttonPanel.add(voltarButton);
+        buttonPanel.add(Box.createRigidArea(new Dimension(5, 0)));
 
         // TODO: REMOVER ESSE DEBUG
         JButton cadastrarButtonDebug = new JButton("Cadastrar DEBUG");
-        cadastrarButtonDebug.addActionListener(e -> cadastrarClienteDebug());
+        cadastrarButtonDebug.addActionListener(e -> debugInfo());
         buttonPanel.add(cadastrarButtonDebug);
 
+        buttonPanel.add(Box.createHorizontalGlue());
+
         // Adiciona os painéis ao painel principal
-        mainPanel.add(nomePanel);
-        mainPanel.add(cpfPanel);
-        mainPanel.add(cpfTitularPanel);
-        mainPanel.add(nascimentoPanel);
+        contentPanel.add(nomePanel);
+        contentPanel.add(Box.createVerticalGlue());
+        contentPanel.add(cpfPanel);
+        contentPanel.add(Box.createVerticalGlue());
+        contentPanel.add(cpfTitularPanel);
+        contentPanel.add(Box.createVerticalGlue());
+        contentPanel.add(nascimentoPanel);
+
+        mainPanel.add(Box.createVerticalGlue());
+        mainPanel.add(contentPanel);
+        mainPanel.add(Box.createVerticalGlue());
         mainPanel.add(buttonPanel);
 
         // Adiciona o painel principal à janela
@@ -76,10 +97,10 @@ public class MenuCadastroCliente extends MenuBase {
 
     private void cadastrarCliente() {
         try {
-            String nome = nomeTextField.getText();
-            String cpf = cpfTextField.getText();
-            String cpfTitular = cpfTitularTextField.getText().replaceAll("[^0-9]", "");
-            LocalDate dataNascimento = DateParser.parse(nascimentoTextField.getText());
+            String nome = nomeTextField.getField().getText();
+            String cpf = cpfTextField.getField().getText();
+            String cpfTitular = cpfTitularTextField.getField().getText().replaceAll("[^0-9]", "");
+            LocalDate dataNascimento = DateParser.parse(nascimentoTextField.getField().getText());
 
             if (cpfTitular.length() == 0) {
                 // Se o cpf do titular for vazio, o cliente é o titular
@@ -98,49 +119,39 @@ public class MenuCadastroCliente extends MenuBase {
         }
     }
 
-    // TODO: APAGA ISSO
-    private void cadastrarClienteDebug() {
-        try {
-            String nome;
-            // Gerar um nome aleatório de 5 a 10 caracteres
-            int tamanhoNome = (int) (Math.random() * 6) + 5;
-            nome = "";
-            for (int i = 0; i < tamanhoNome; i++) {
-                nome += (char) ((int) (Math.random() * 26) + 97);
-            }
+    // DEBUG
+    private void debugInfo() {
+        String nome = "";
 
-            // Gerar um cpf aleatório
-            String cpf = "";
-            for (int i = 0; i < 9; i++) {
-                cpf += (int) (Math.random() * 10);
-            }
-            int d1 = CalculaDigito1Cpf(cpf);
-            int d2 = CalculaDigito2Cpf(cpf);
-            cpf += d1;
-            cpf += d2;
-
-            String cpfTitular = cpfTitularTextField.getText().replaceAll("[^0-9]", "");
-            LocalDate dataNascimento = DateParser.parse("01/01/1965");
-
-            if (cpfTitular.length() == 0) {
-                // Se o cpf do titular for vazio, o cliente é o titular
-                getHotel().cadastrarClienteTitular(nome, cpf, dataNascimento);
-            } else {
-                getHotel().cadastrarClienteDependente(nome, cpf, dataNascimento, cpfTitular);
-            }
-
-            JOptionPane.showMessageDialog(this, "Cliente cadastrado com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
-            fecharMenu(true);
-        } catch (Exception e) {
-            // TODO(thiago): Dar mensagens de erro mais específicas
-            // TODO(thiago): Conferir se todos os erros são tratados, olhar as outras classes.
-
-            JOptionPane.showMessageDialog(this, "Erro ao cadastrar cliente: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+        // Gerar um nome aleatório de 5 a 10 caracteres, alternando entre vogais e consoantes e com a primeira letra maiúscula
+        int tamanho = (int) (Math.random() * 6 + 5);
+        for (int i = 0; i < tamanho; i++) {
+            nome += (char) (Math.random() * 26 + 97);
         }
+        nome = nome.substring(0, 1).toUpperCase() + nome.substring(1);
+        nomeTextField.getField().setText(nome);
+
+        // Gerar um cpf aleatório
+        String cpf = "";
+        for (int i = 0; i < 9; i++) {
+            cpf += (int) (Math.random() * 10);
+        }
+        int d1 = calculaDigito1Cpf(cpf);
+        int d2 = calculaDigito2Cpf(cpf);
+        cpf += d1;
+        cpf += d2;
+        cpf = cpf.substring(0, 3) + "." + cpf.substring(3, 6) + "." + cpf.substring(6, 9) + "-" + cpf.substring(9, 11);
+        cpfTextField.getField().setText(cpf);
+
+        LocalDate dataNascimento;
+        int ano = (int) (Math.random() * 100 + 1900);
+        int mes = (int) (Math.random() * 12 + 1);
+        int dia = (int) (Math.random() * 28 + 1);
+        nascimentoTextField.getField().setText(LocalDate.of(ano, mes, dia).format(DateParser.FORMATTER));
     }
 
-    // TODO: APAGA ISSO
-    private static int CalculaDigito1Cpf(String CPF) {
+    // DEBUG
+    private static int calculaDigito1Cpf(String CPF) {
         int soma = 0;
         for (int i = 0; i < 9; i++) {
             soma += (10 - i) * (int) (CPF.charAt(i) - 48);
@@ -152,9 +163,9 @@ public class MenuCadastroCliente extends MenuBase {
         return 11 - resto;
     }
 
-    // TODO: APAGA ISSO
-    private static int CalculaDigito2Cpf(String CPF) {
-        int digito1 = CalculaDigito1Cpf(CPF);
+    // DEBUG
+    private static int calculaDigito2Cpf(String CPF) {
+        int digito1 = calculaDigito1Cpf(CPF);
         int soma = 0;
         for (int i = 0; i < 9; i++) {
             soma += (11 - i) * (int) (CPF.charAt(i) - 48);

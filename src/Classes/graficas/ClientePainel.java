@@ -6,9 +6,14 @@ import Classes.helpers.DateParser;
 import Classes.helpers.Utils;
 
 import javax.swing.*;
+import java.util.ArrayList;
 
 // TODO(thiago): Usar JTextField ao invés de JLabel para facilitar a seleção.
 public class ClientePainel extends JPanel {
+    public interface ClienteCallback {
+        void onUpdate(Cliente cliente);
+    }
+
     private Cliente cliente;
     private JLabel labelNome;
     private JLabel labelCPF;
@@ -16,8 +21,10 @@ public class ClientePainel extends JPanel {
     private JLabel labelQuarto;
     private JLabel labelTitular;
     private JLabel labelConta;
+    private final ArrayList<ClienteCallback> callbacks;
 
     public ClientePainel(Cliente cliente) {
+        this.callbacks = new ArrayList<>();
         this.initializeLabels();
 
         this.add(labelNome);
@@ -51,6 +58,9 @@ public class ClientePainel extends JPanel {
             labelQuarto.setText("Quarto: ");
             labelTitular.setText("Titular: ");
             labelConta.setText("Conta: ");
+
+            for (ClienteCallback callback : callbacks)
+                callback.onUpdate(cliente);
             return;
         }
 
@@ -70,6 +80,21 @@ public class ClientePainel extends JPanel {
         }
 
         labelConta.setText(String.format("Conta: %.2f", cliente.getConta()));
+
+        for (ClienteCallback callback : callbacks)
+            callback.onUpdate(cliente);
+    }
+
+    public void addCallback(ClienteCallback callback) {
+        this.callbacks.add(callback);
+    }
+
+    public void removeCallback(ClienteCallback callback) {
+        this.callbacks.remove(callback);
+    }
+
+    public void clearCallbacks() {
+        this.callbacks.clear();
     }
 
     private void initializeLabels() {

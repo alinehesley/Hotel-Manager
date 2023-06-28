@@ -128,9 +128,20 @@ public class Hotel {
     }
 
     public Cliente getClienteFromCpf(String cpf) {
+        cpf = cpf.replaceAll("[^0-9]", "");
         for (Cliente c : listaClientes) {
             if (c.getCpf().equals(cpf)) {
                 return c;
+            }
+        }
+
+        return null;
+    }
+
+    public Quarto getQuartoFromNumero(int numero) {
+        for (Quarto q : listaQuartos) {
+            if (q.getNumero() == numero) {
+                return q;
             }
         }
 
@@ -142,6 +153,11 @@ public class Hotel {
         boolean filtrar(Cliente cliente);
     }
 
+    public interface FiltroQuarto {
+        // Return true if the room should be included in the list
+        boolean filtrar(Quarto quarto);
+    }
+
     public ArrayList<Cliente> filtrarClientes(FiltroCliente filtro) {
         ArrayList<Cliente> clientesFiltrados = new ArrayList<Cliente>();
         for (Cliente cliente : listaClientes) {
@@ -150,6 +166,16 @@ public class Hotel {
             }
         }
         return clientesFiltrados;
+    }
+
+    public ArrayList<Quarto> filtrarQuartos(FiltroQuarto filtro) {
+        ArrayList<Quarto> quartosFiltrados = new ArrayList<>();
+        for (Quarto quarto : listaQuartos) {
+            if (filtro.filtrar(quarto)) {
+                quartosFiltrados.add(quarto);
+            }
+        }
+        return quartosFiltrados;
     }
 
     public Quarto reservarQuarto(String cpf, int totalCamaCasal, int totalCamaSolteiro, LocalDate dataEntrada, LocalDate dataSaida) throws ClienteException {
@@ -205,6 +231,7 @@ public class Hotel {
         }
 
         quarto.getTitular().addConta(valorEstadia);
+        listaQuartos.remove(quarto);
 
         // Reinicializando o quarto
         quarto.fazerCheckOut();

@@ -1,17 +1,16 @@
 package Classes;
 
-import Classes.graficas.MenuInicial;
+import Classes.graficas.Book;
 
 import javax.swing.*;
-import java.awt.*;
 
 public class Main {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             // TODO: Colocar o hotel do arquivo ao invés do hotel padrão
-            Hotel hotel = MenuInicial.getHotelPadrao();
+            Hotel hotel = Book.getHotelPadrao();
 
-            MenuInicial menuPrincipalGUI = new MenuInicial(hotel);
+            Book menuPrincipalGUI = new Book(hotel);
             menuPrincipalGUI.setVisible(true);
         });
     }

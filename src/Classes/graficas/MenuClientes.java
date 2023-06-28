@@ -1,6 +1,7 @@
 package Classes.graficas;
 
 import Classes.Cliente;
+import Classes.ClienteTitular;
 import Classes.Hotel;
 import Classes.exceptions.ClienteException;
 import Classes.helpers.Utils;
@@ -15,7 +16,7 @@ public class MenuClientes extends MenuClientesBase {
         // Configurações básicas da janela
         super(h, "Menu de clientes");
 
-        JButton cadastrarClienteButton = new JButton("Cadastrar Cliente");
+        JButton cadastrarClienteButton = new JButton("Cadastrar");
         cadastrarClienteButton.addActionListener(e -> {
             MenuCadastroCliente menuCadastroCliente = new MenuCadastroCliente(getHotel());
             menuCadastroCliente.setParent(this);
@@ -23,7 +24,7 @@ public class MenuClientes extends MenuClientesBase {
         });
         buttonPanel.add(cadastrarClienteButton);
 
-        JButton removerClienteButton = new JButton("Remover Cliente");
+        JButton removerClienteButton = new JButton("Remover");
         removerClienteButton.addActionListener(e -> {
             Cliente cliente = clientePainel.getCliente();
             if (cliente != null) {
@@ -45,7 +46,8 @@ public class MenuClientes extends MenuClientesBase {
                                 JOptionPane.ERROR_MESSAGE
                         );
                     }
-                    clientePainel.refresh();
+                    clientePainel.setCliente(null);
+                    listaClientes.refresh();
                 }
             } else {
                 JOptionPane.showMessageDialog(
@@ -57,21 +59,50 @@ public class MenuClientes extends MenuClientesBase {
             }
         });
         buttonPanel.add(removerClienteButton);
+        removerClienteButton.setVisible(false);
 
-        // TODO(thiago): Menu para pagar as contas
-        JButton pagarContaButton = new JButton("Pagar Conta");
+        JButton reservarQuartoButton = new JButton("Reservar quarto");
+        reservarQuartoButton.addActionListener(e -> {
+            Cliente cliente = clientePainel.getCliente();
+            if (cliente == null)
+                return;
+
+            MenuReserva menuReserva = new MenuReserva(getHotel());
+            menuReserva.setParent(this);
+            menuReserva.getCpfField().getField().setText(cliente.getCpfFormatado());
+            menuReserva.exibirMenu();
+        });
+        buttonPanel.add(reservarQuartoButton);
+        reservarQuartoButton.setVisible(false);
+
+        JButton pagarContaButton = new JButton("Pagamento");
         pagarContaButton.addActionListener(e -> {
             Cliente cliente = clientePainel.getCliente();
-            if (cliente != null)
+            if (cliente == null)
+                return;
+
+            if (cliente.getConta() < 0.01)
+                return;
+
+            int pagarConta = JOptionPane.showConfirmDialog(this, String.format("Confirmar pagamento de R$ %.2f?", cliente.getConta()), "Pagamento", JOptionPane.YES_NO_OPTION);
+            if (pagarConta == JOptionPane.YES_OPTION) {
                 cliente.pagarConta();
+            }
 
             clientePainel.refresh();
         });
         buttonPanel.add(pagarContaButton);
+        pagarContaButton.setVisible(false);
 
         JButton closeButton = new JButton("Fechar");
         closeButton.addActionListener(e -> fecharMenu(false));
         buttonPanel.add(Box.createHorizontalGlue());
         buttonPanel.add(closeButton);
+
+        clientePainel.addCallback(cliente -> {
+            removerClienteButton.setVisible(cliente != null);
+            pagarContaButton.setVisible(cliente != null);
+            reservarQuartoButton.setVisible(cliente != null && (cliente instanceof ClienteTitular) && cliente.getQuarto() == null);
+        });
     }
 }

@@ -1,5 +1,6 @@
 package Classes;
 
+import Classes.exceptions.ClienteException;
 import Classes.exceptions.QuartoIndisponivelException;
 import Classes.exceptions.QuartoNaoLocadoException;
 
@@ -71,9 +72,12 @@ public class Quarto {
         frigobar = Frigobar.criarFrigobarPadrao(this);
     }
 
-    public void fazerCheckIn(ClienteTitular c, LocalDate dataEntrada, LocalDate dataSaida) throws QuartoIndisponivelException {
+    public void fazerCheckIn(ClienteTitular c, LocalDate dataEntrada, LocalDate dataSaida) throws QuartoIndisponivelException, ClienteException  {
         if (!ehDisponivel())
             throw new QuartoIndisponivelException(numero);
+
+        if (c.getQuarto() != null)
+            throw new ClienteException("Cliente já está em um quarto.");
 
         if (c.getListaDependentes().size() + 1 > getTotalCamaSolteiro() + 2 * getTotalCamaCasal())
             throw new QuartoIndisponivelException("Número de clientes maior que número de camas do quarto %d", numero);

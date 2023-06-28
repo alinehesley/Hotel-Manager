@@ -11,12 +11,19 @@ public class MenuClientePagamento extends MenuClientesBase {
         // Configurações básicas da janela
         super(h, "Seleção de cliente");
 
-        // TODO(thiago): Menu para pagar as contas
-        JButton pagarContaButton = new JButton("Pagar Conta");
+        JButton pagarContaButton = new JButton("Pagamento");
         pagarContaButton.addActionListener(e -> {
             Cliente cliente = clientePainel.getCliente();
-            if (cliente != null)
+            if (cliente == null)
+                return;
+
+            if (cliente.getConta() < 0.01)
+                return;
+
+            int pagarConta = JOptionPane.showConfirmDialog(this, String.format("Confirmar pagamento de R$ %.2f?", cliente.getConta()), "Pagamento", JOptionPane.YES_NO_OPTION);
+            if (pagarConta == JOptionPane.YES_OPTION) {
                 cliente.pagarConta();
+            }
 
             clientePainel.refresh();
         });
