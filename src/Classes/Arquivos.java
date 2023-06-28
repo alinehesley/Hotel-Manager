@@ -270,30 +270,6 @@ public class Arquivos {
 
         return quartos;
     }
-    public static void main(String args[]) {
-        Arquivos arquivo = new Arquivos();
-        LocalDate nascimento = LocalDate.of(2001, 3,2);
-        ArrayList<ClienteTitular> clientes = Arquivos.carregaDadosClienteTitular();
-        //System.out.println(clientes);
-        ArrayList<ClienteDependente> clientesDependente = Arquivos.carregaDadosClienteDependente(clientes);
-        System.out.println(clientesDependente);
-        ArrayList<Quarto> quartos = Arquivos.carregaDadosQuarto(clientes);
 
-
-        try {
-            ClienteTitular cliente = Arquivos.getTitularByCpfFromList("04691665320", clientes);
-            ClienteDependente cliente1= new ClienteDependente("Mateus", nascimento, "61313511390", 0.0);
-            ClienteTitular cliente2 = new ClienteTitular("Kairé", nascimento, "61313511390");
-            //clientes.add(cliente);
-            clientesDependente.add(cliente1);
-            //clientes.add(cliente2);
-            arquivo.salvaDadosClienteDependente(clientesDependente);
-            //arquivo.salvaDadosClienteTitular(clientes);
-
-        } catch ( ClienteException e){
-
-        }
-
-    }
 }
 
