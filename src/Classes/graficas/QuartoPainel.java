@@ -14,11 +14,13 @@ public class QuartoPainel extends JPanel {
     private JLabel labelData;
     private JLabel labelTitular;
     private JLabel labelDisponivel;
+    private JLabel labelCapacidade;
 
     public QuartoPainel(Quarto quarto) {
         this.initializeLabels();
 
         this.add(labelNumero);
+        this.add(labelCapacidade);
         this.add(labelData);
         this.add(labelTitular);
         this.add(labelDisponivel);
@@ -42,6 +44,7 @@ public class QuartoPainel extends JPanel {
     public void refresh() {
         if (quarto == null) {
             labelNumero.setText("Número: ");
+            labelCapacidade.setText("Capacidade: ");
             labelData.setText("Data: ");
             labelTitular.setText("Titular: ");
             labelDisponivel.setText("Disponível: ");
@@ -49,7 +52,7 @@ public class QuartoPainel extends JPanel {
         }
 
         labelNumero.setText("Número: " + quarto.getNumero());
-
+        labelCapacidade.setText("Capacidade: " + quarto.getCapacidade());
         if (quarto.getTitular() != null) {
             if (quarto.getDataEntrada() == null || quarto.getDataSaida() == null)
                 throw new RuntimeException("Quarto com titular mas sem data de entrada ou saída");
@@ -70,9 +73,11 @@ public class QuartoPainel extends JPanel {
 
     private void initializeLabels() {
         labelNumero = new JLabel();
+        labelCapacidade = new JLabel();
         labelData = new JLabel();
         labelTitular = new JLabel();
         labelDisponivel = new JLabel();
+
 
         labelNumero.addMouseListener(Utils.onMouseClick(e -> {
             if (quarto != null)

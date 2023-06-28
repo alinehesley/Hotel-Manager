@@ -9,6 +9,8 @@ public class MenuCheckIn extends MenuBase {
     private JTextField camasSolteiroTextField;
     private JTextField camasCasalTextField;
 
+    JPanel dataSaidaPanel = new JPanel();
+
     public MenuCheckIn(Hotel h){
         super(h, "Menu Check-in");
 

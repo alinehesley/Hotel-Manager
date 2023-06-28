@@ -79,13 +79,7 @@ public class MenuInicial extends MenuBase {
                 "(42) 4242-4242",
                 "Hotel 5 estrelas"
         );
-        for (int i=0;i<10;i++){
-            h.addQuarto(1,1);
-            h.addQuarto(1,0);
-            h.addQuarto(0,1);
-            h.addQuarto(0,3);
-            h.addQuarto(0,2);
-        }
+
         return h;
     }
 }

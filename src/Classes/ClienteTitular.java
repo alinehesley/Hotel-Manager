@@ -1,6 +1,7 @@
 package Classes;
 
 import Classes.exceptions.CPFInvalidoException;
+import Classes.exceptions.ClienteException;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -9,8 +10,14 @@ public class ClienteTitular extends Cliente {
     private ArrayList<ClienteDependente> listaDependentes;
     private Quarto quarto;
 
-    public ClienteTitular(String nome, LocalDate dataNascimento, String cpf) throws CPFInvalidoException {
+    public ClienteTitular(String nome, LocalDate dataNascimento, String cpf) throws ClienteException {
+
         super(nome, dataNascimento, cpf);
+        this.listaDependentes = new ArrayList<ClienteDependente>();
+    }
+
+    public ClienteTitular(String nome, LocalDate dataNascimento, String cpf, double conta) throws ClienteException {
+        super(nome, dataNascimento, cpf, conta);
         this.listaDependentes = new ArrayList<ClienteDependente>();
     }
 

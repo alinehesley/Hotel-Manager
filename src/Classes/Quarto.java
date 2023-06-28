@@ -18,15 +18,93 @@ public class Quarto {
     private int totalCamaSolteiro;
     private LocalDate dataEntrada;
     private LocalDate dataSaida;
-    private float precoEstadia;
+    private final double precoEstadia = 350.0;
+
+
+    private int capacidade;
+
+
+
+    public static void setTotalQuartos(int totalQuartos) {
+        Quarto.totalQuartos = totalQuartos;
+    }
+
+    public void setNumero(int numero) {
+        this.numero = numero;
+    }
+
+    public boolean isDisponivel() {
+        return disponivel;
+    }
+
+    public void setClientes(ArrayList<Cliente> clientes) {
+        this.clientes = clientes;
+    }
+
+    public void setTitular(ClienteTitular titular) {
+        this.titular = titular;
+    }
+
+    public Frigobar getFrigobar() {
+        return frigobar;
+    }
+
+    public void setFrigobar(Frigobar frigobar) {
+        this.frigobar = frigobar;
+    }
+
+    public void setTotalCamaCasal(int totalCamaCasal) {
+        this.totalCamaCasal = totalCamaCasal;
+    }
+
+    public void setTotalCamaSolteiro(int totalCamaSolteiro) {
+        this.totalCamaSolteiro = totalCamaSolteiro;
+    }
+
+    public void setDataEntrada(LocalDate dataEntrada) {
+        this.dataEntrada = dataEntrada;
+    }
+
+    public void setDataSaida(LocalDate dataSaida) {
+        this.dataSaida = dataSaida;
+    }
+
+    public double getPrecoEstadia() {
+        return precoEstadia;
+    }
+
+    public int getCapacidade() {
+        return capacidade;
+    }
+
+    public void setCapacidade(int capacidade) {
+        this.capacidade = capacidade;
+    }
 
     public Quarto(int numero, int totalCamaCasal, int totalCamaSolteiro) {
         this.numero = numero;
         this.totalCamaCasal = totalCamaCasal;
         this.totalCamaSolteiro = totalCamaSolteiro;
+        this.capacidade = 2*totalCamaCasal + totalCamaSolteiro;
         this.disponivel = true;
         this.titular = null;
         this.clientes = new ArrayList<Cliente>();
+        this.frigobar = Frigobar.criarFrigobarPadrao(this);
+        totalQuartos++;
+    }
+
+    //numero, titular, totalCamaCasal, totalCamaSolteiro, dataEntrada, dataSaida, precoEstadia
+    public Quarto(int numero, ClienteTitular titular,  int totalCamaCasal,
+                  int totalCamaSolteiro, LocalDate dataEntrada, LocalDate dataSaida) {
+        this.numero = numero;
+        this.totalCamaCasal = totalCamaCasal;
+        this.totalCamaSolteiro = totalCamaSolteiro;
+        this.capacidade = 2*totalCamaCasal + totalCamaSolteiro;
+        this.disponivel = false;
+        this.titular = titular;
+        this.clientes = new ArrayList<Cliente>();
+        clientes.add(titular);
+        clientes.addAll(titular.getListaDependentes());
         this.frigobar = Frigobar.criarFrigobarPadrao(this);
         totalQuartos++;
     }
