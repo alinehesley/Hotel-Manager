@@ -5,6 +5,8 @@ import Classes.Hotel;
 import javax.swing.*;
 
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class Book extends MenuBase {
     private JPanel mainPanel;
@@ -16,6 +18,12 @@ public class Book extends MenuBase {
     public Book(Hotel hotel) {
         super(hotel, "Book");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e){
+                getHotel().salvaArquivosCliente();
+                getHotel().salvaArquivoQuarto();
+            }
+        });
 
         // Criação do painel principal
         mainPanel = new JPanel();
@@ -78,17 +86,5 @@ public class Book extends MenuBase {
 
         contentPanel.revalidate();
         contentPanel.repaint();
-    }
-
-    // TODO(thiago): Essa função deve ser estática?
-    public static Hotel getHotelPadrao(){
-        Hotel h = new Hotel(
-                "Hotel de POO",
-                "Rua dos bobos numero zero",
-                "(42) 4242-4242",
-                "Hotel 5 estrelas"
-        );
-
-        return h;
     }
 }

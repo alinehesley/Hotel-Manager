@@ -97,7 +97,6 @@ public class MenuClientes extends MenuClientesBase {
 
         JButton closeButton = new JButton("Fechar");
         closeButton.addActionListener(e -> {
-            h.salvaArquivosCliente();
             fecharMenu(false);
         });
         buttonPanel.add(Box.createHorizontalGlue());

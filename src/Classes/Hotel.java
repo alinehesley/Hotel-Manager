@@ -272,23 +272,12 @@ public class Hotel {
             valorEstadia = 0.0;
         }
 
+        System.out.println(valorEstadia);
         quarto.getTitular().addConta(valorEstadia);
-        listaQuartos.remove(quarto);
 
         // Reinicializando o quarto
         quarto.fazerCheckOut();
     }
-
-    // TODO(thiago): Realmente não precisa dessa função?
-//    private boolean recebePagamento(Quarto quarto, boolean ehPago, double totalConsumo) {
-//        if (ehPago) {
-//            quarto.getTitular().setEhInadimplente(ehPago);
-//            return true;
-//        } else {
-//            quarto.getTitular().setEhInadimplente(ehPago);
-//            return false;
-//        }
-//    }
 
     // Calcula a capacidade de vagas no quarto
     // Chamado após um checkin ou um checkout

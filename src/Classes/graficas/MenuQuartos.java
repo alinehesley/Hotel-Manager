@@ -35,13 +35,13 @@ public class MenuQuartos extends MenuQuartosBase {
         encerrarReserva.addActionListener(e -> {
             Quarto quarto = (Quarto) listaQuartos.getSelectedValue();
             encerrarReserva(quarto);
+            refresh();
         });
         buttonPanel.add(encerrarReserva);
         encerrarReserva.setVisible(false);
 
         JButton closeButton = new JButton("Fechar");
         closeButton.addActionListener(e -> {
-            h.salvaArquivoQuarto();
             fecharMenu(true);
         });
         buttonPanel.add(Box.createHorizontalGlue());
@@ -51,26 +51,6 @@ public class MenuQuartos extends MenuQuartosBase {
             reservarButton.setVisible(quarto != null && quarto.ehDisponivel());
             encerrarReserva.setVisible(quarto != null && !quarto.ehDisponivel());
         });
-    }
-
-    public boolean reservarQuarto(Quarto quarto, Cliente cliente) {
-        quarto = (Quarto) Objects.requireNonNull(quarto);
-        cliente = (Cliente) Objects.requireNonNull(cliente);
-
-        if (!(cliente instanceof ClienteTitular)) {
-            JOptionPane.showMessageDialog(this, "Cliente não é titular!", "Reservar quarto", JOptionPane.ERROR_MESSAGE);
-            return false;
-        }
-
-        try {
-            quarto.fazerCheckIn((ClienteTitular) cliente, LocalDate.now(), LocalDate.MAX);
-            JOptionPane.showMessageDialog(this, "Quarto reservado com sucesso");
-            listaClientes.refresh();
-            return true;
-        } catch (QuartoIndisponivelException | ClienteException e) {
-            JOptionPane.showMessageDialog(this, e.getMessage(), "Reservar quarto", JOptionPane.ERROR_MESSAGE);
-            return false;
-        }
     }
 
     public boolean encerrarReserva(Quarto quarto) {

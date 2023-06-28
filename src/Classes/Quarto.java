@@ -91,6 +91,8 @@ public class Quarto {
         this.titular = null;
         this.clientes = new ArrayList<Cliente>();
         this.frigobar = Frigobar.criarFrigobarPadrao(this);
+        this.dataEntrada = null;
+        this.dataSaida = null;
         totalQuartos++;
     }
 
@@ -107,6 +109,8 @@ public class Quarto {
         clientes.add(titular);
         clientes.addAll(titular.getListaDependentes());
         this.frigobar = Frigobar.criarFrigobarPadrao(this);
+        this.dataEntrada = dataEntrada;
+        this.dataSaida = dataSaida;
         totalQuartos++;
     }
 
@@ -185,7 +189,7 @@ public class Quarto {
         if (disponivel)
             throw new QuartoNaoLocadoException(numero);
 
-        long intervaloEstadia = ChronoUnit.DAYS.between(dataSaida, dataEntrada);
+        long intervaloEstadia = ChronoUnit.DAYS.between(dataEntrada, dataSaida);
         double preco_estadia = intervaloEstadia * precoEstadia * clientes.size();
         return preco_estadia;
     }
@@ -197,7 +201,7 @@ public class Quarto {
 
         this.dataEntrada = null;
         this.dataSaida = null;
-        this.clientes = null;
+        this.clientes.clear();
         this.titular = null;
         this.disponivel = true;
     }

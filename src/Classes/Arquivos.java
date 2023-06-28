@@ -1,9 +1,11 @@
 package Classes;
 import Classes.exceptions.CPFInvalidoException;
 import Classes.exceptions.ClienteException;
+import Classes.helpers.DateParser;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Scanner;
 import java.io.BufferedWriter;
 import java.io.BufferedReader;
@@ -208,8 +210,8 @@ public class Arquivos {
                             + quarto.getTitular().getCpf() + ","
                             + quarto.getTotalCamaCasal() + ","
                             + quarto.getTotalCamaSolteiro() + ","
-                            + quarto.getDataEntrada() + ","
-                            + quarto.getDataSaida()+ ","
+                            + quarto.getDataEntrada().format(DateParser.FORMATTER) + ","
+                            + quarto.getDataSaida().format(DateParser.FORMATTER) + ","
                             + "350";
                     writer.write(linha);
                     writer.newLine();
@@ -250,18 +252,20 @@ public class Arquivos {
 
                 // Cria o objeto quarto e adiciona à lista
                 if(!disponivel & titular != null){
+                    LocalDate dataEntrada = DateParser.parse(campos[5]);
+                    LocalDate dataSaida = DateParser.parse(campos[6]);
 
-                    LocalDate dataEntrada = LocalDate.parse(campos[5]);
-                    LocalDate dataSaida = LocalDate.parse(campos[6]);
+                    System.out.println("Data Ent: " + dataEntrada.format(DateParser.FORMATTER));
+                    System.out.println("Data Sai: " + dataSaida.format(DateParser.FORMATTER));
                     Quarto quarto = new Quarto(numero, titular, totalCamaCasal, totalCamaSolteiro, dataEntrada, dataSaida);
                     quartos.add(quarto);
+                    titular.setQuarto(quarto);
                 }else{
                     Quarto quarto = new Quarto(numero, totalCamaCasal, totalCamaSolteiro);
                     quartos.add(quarto);
                 }
 
             }
-
 
             System.out.println("Dados carregados do arquivo CSV com sucesso!");
         } catch (IOException e) {
