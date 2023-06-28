@@ -40,7 +40,10 @@ public class MenuQuartos extends MenuQuartosBase {
         encerrarReserva.setVisible(false);
 
         JButton closeButton = new JButton("Fechar");
-        closeButton.addActionListener(e -> fecharMenu(true));
+        closeButton.addActionListener(e -> {
+            h.salvaArquivoQuarto();
+            fecharMenu(true);
+        });
         buttonPanel.add(Box.createHorizontalGlue());
         buttonPanel.add(closeButton);
 

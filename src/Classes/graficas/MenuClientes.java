@@ -3,6 +3,7 @@ package Classes.graficas;
 import Classes.Cliente;
 import Classes.ClienteTitular;
 import Classes.Hotel;
+import Classes.Arquivos;
 import Classes.exceptions.ClienteException;
 import Classes.helpers.Utils;
 
@@ -95,7 +96,10 @@ public class MenuClientes extends MenuClientesBase {
         pagarContaButton.setVisible(false);
 
         JButton closeButton = new JButton("Fechar");
-        closeButton.addActionListener(e -> fecharMenu(false));
+        closeButton.addActionListener(e -> {
+            h.salvaArquivosCliente();
+            fecharMenu(false);
+        });
         buttonPanel.add(Box.createHorizontalGlue());
         buttonPanel.add(closeButton);
 

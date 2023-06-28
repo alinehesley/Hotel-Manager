@@ -16,6 +16,18 @@ public class ClienteDependente extends Cliente {
         titular.addDependente(this);
     }
 
+    ClienteDependente(String nome, LocalDate dataNascimento, String cpf, ClienteTitular titular, double conta) throws ClienteException {
+        super(nome, dataNascimento, cpf, conta);
+
+        this.titular = Objects.requireNonNull(titular);
+        titular.addDependente(this);
+    }
+    ClienteDependente(String nome, LocalDate dataNascimento, String cpf, double conta) throws ClienteException {
+        super(nome, dataNascimento, cpf, conta);
+
+    }
+
+
     public ClienteTitular getTitular() {
         return titular;
     }

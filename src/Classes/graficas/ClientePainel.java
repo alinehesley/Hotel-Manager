@@ -1,6 +1,8 @@
 package Classes.graficas;
 
+import Classes.Arquivos;
 import Classes.Cliente;
+import Classes.Hotel;
 import Classes.ClienteDependente;
 import Classes.helpers.DateParser;
 import Classes.helpers.Utils;
@@ -8,13 +10,14 @@ import Classes.helpers.Utils;
 import javax.swing.*;
 import java.util.ArrayList;
 
-// TODO(thiago): Usar JTextField ao invés de JLabel para facilitar a seleção.
 public class ClientePainel extends JPanel {
     public interface ClienteCallback {
         void onUpdate(Cliente cliente);
     }
 
+    private Hotel hotel;
     private Cliente cliente;
+    // private Arquivos arquivo = new Arquivos();
     private JLabel labelNome;
     private JLabel labelCPF;
     private JLabel labelDataNascimento;

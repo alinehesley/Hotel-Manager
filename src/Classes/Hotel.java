@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class Hotel {
+    private Arquivos arquivo = new Arquivos();
     private ArrayList<Quarto> listaQuartos;
     private ArrayList<Cliente> listaClientes;
 
@@ -22,7 +23,15 @@ public class Hotel {
         this.telefone = telefone;
         this.categoria = categoria;
         this.listaQuartos = new ArrayList<Quarto>();
+        ArrayList<ClienteTitular> tempTitulares = Arquivos.carregaDadosClienteTitular();
+        ArrayList<ClienteDependente> tempDependentes = Arquivos.carregaDadosClienteDependente(tempTitulares);
         this.listaClientes = new ArrayList<Cliente>();
+        this.listaClientes.addAll(tempTitulares);
+        this.listaClientes.addAll(tempDependentes);
+        ArrayList<Quarto> tempQuartos = Arquivos.carregaDadosQuarto(tempTitulares);
+        for(Quarto quarto: tempQuartos){
+            listaQuartos.add(quarto);
+        }
     }
 
     public ArrayList<Quarto> getQuartos() {
@@ -51,6 +60,39 @@ public class Hotel {
 
     public int getTotalVagas() {
         return totalVagas;
+    }
+
+    public ArrayList<ClienteTitular> getTitulares(){
+        ArrayList<ClienteTitular> titulares = new ArrayList<>();
+        for(Cliente cliente: listaClientes){
+            if(cliente instanceof  ClienteTitular){
+                titulares.add((ClienteTitular) cliente);
+            }
+        }
+        return titulares;
+    }
+
+    public ArrayList<ClienteDependente> getDependentes(){
+        ArrayList<ClienteDependente> titulares = new ArrayList<>();
+        for(Cliente cliente: listaClientes){
+            if(cliente instanceof  ClienteDependente){
+                titulares.add((ClienteDependente) cliente);
+            }
+        }
+        return titulares;
+    }
+
+    public void salvaArquivoQuarto(){
+        arquivo.salvaDadosQuartos(listaQuartos);
+    }
+    public void salvaArquivosCliente(){
+        ArrayList<ClienteTitular> titulares = getTitulares();
+        ArrayList<ClienteDependente> dependentes = getDependentes();
+        arquivo.salvaDadosClienteTitular(titulares);
+        arquivo.salvaDadosClienteDependente(dependentes);
+    }
+    public Arquivos getArquivo() {
+        return arquivo;
     }
 
     public void addQuarto(Quarto quarto) {
@@ -86,7 +128,7 @@ public class Hotel {
         }
     }
 
-    public void cadastrarClienteTitular(String nome, String cpf, LocalDate dataNascimento) throws ClienteCadastradoException, CPFInvalidoException {
+    public void cadastrarClienteTitular(String nome, String cpf, LocalDate dataNascimento) throws ClienteException {
         cadastrarClienteTitular(new ClienteTitular(nome, dataNascimento, cpf));
     }
 

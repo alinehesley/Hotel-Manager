@@ -1,6 +1,7 @@
 package Classes;
 
 import Classes.exceptions.CPFInvalidoException;
+import Classes.exceptions.ClienteException;
 
 import java.time.LocalDate;
 
@@ -10,7 +11,7 @@ public abstract class Cliente {
     private String cpf;
     private double conta;
 
-    public Cliente(String nome, LocalDate dataNascimento, String cpf) throws CPFInvalidoException {
+    public Cliente(String nome, LocalDate dataNascimento, String cpf) throws ClienteException {
         this.nome = nome;
         this.dataNascimento = dataNascimento;
 
@@ -20,6 +21,19 @@ public abstract class Cliente {
         this.cpf = cpf.replaceAll("[^0-9]", "");
         this.conta = 0;
     }
+
+    public Cliente(String nome, LocalDate dataNascimento, String cpf, double conta) throws ClienteException {
+        this.nome = nome;
+        this.dataNascimento = dataNascimento;
+        this.conta = conta;
+
+        if (Validacao.validarCPF(cpf) == false)
+            throw new CPFInvalidoException(cpf);
+
+        this.cpf = cpf.replaceAll("[^0-9]", "");
+        this.conta = 0;
+    }
+
 
     public double getConta() {
         return conta;
@@ -45,6 +59,16 @@ public abstract class Cliente {
 
     public String getCpf() {
         return cpf;
+    }
+
+    @Override
+    public String toString() {
+        return "Cliente{" +
+                "nome='" + nome + '\'' +
+                ", dataNascimento=" + dataNascimento +
+                ", cpf='" + cpf + '\'' +
+                ", conta=" + conta +
+                '}';
     }
 
     public String getCpfFormatado() {
